@@ -1,10 +1,12 @@
 public class Evento implements Comparable<Evento>{
 	TipoEvento tipo;
+	Fila fila;
 	double time;
 	
-	public Evento(TipoEvento tipo, double time) {
+	public Evento(TipoEvento tipo, double time, Fila fila) {
 		this.tipo = tipo;
 		this.time = time;
+		this.fila = fila;
 	}
 
 	@Override
