@@ -24,6 +24,7 @@ public class FilaExecucao {
 		filas = new ArrayList<>();
 
 		
+		//Lendo as filas do config fila
 		for(Fila f: config.getFilas())
 		{
 			filas.add(f);
@@ -38,6 +39,7 @@ public class FilaExecucao {
 		eventos.add(eventoInicial);
 		*/
 		
+		//Lendo os eventos que ja foram pre estabelecidos no config file
 		for(Evento e: config.getEventos())
 		{
 			eventos.add(e);
@@ -45,6 +47,7 @@ public class FilaExecucao {
 		
 		Evento eventoAExecutar = eventos.get(0);
 		
+		//Retirei o maximo para 100 pq
 		for(int i = 0; i<eventos.size(); i++) {
 			//Verificar eventos agendados para executar o que tiver menor tempo
 			eventoAExecutar = eventos.get(i);
