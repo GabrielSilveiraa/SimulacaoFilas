@@ -82,6 +82,13 @@ public class Fila {
 		this.probability.add(probability);
 	}
 	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
 	@Override
 	public String toString() {
 		return "Fila [id=" + id + ", name=" + name + ", maxCapacity=" + maxCapacity + ", count=" + count + ", servers="

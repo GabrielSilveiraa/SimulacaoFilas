@@ -80,22 +80,22 @@ public class FilaExecucao {
 		agendaChegada();
 	}
 	
+	//Refatorar para levar em consideracao probabilidade
 	public static void saida(Evento eventoAExecutar) {
 		eventos.remove(eventoAExecutar);
 		fila.count--;
 		if(fila.count >= fila.servers) {
 			agendaSaida();
 		}
-		if(eventoAExecutar.fila.goesTo != 0) {
-			for(Fila fila: filas) {
-				if(fila.id == eventoAExecutar.fila.goesTo) {
-					Evento chegada = new Evento(TipoEvento.CHEGADA, time, fila);
+		if(!eventoAExecutar.fila.target.isEmpty()) {			
+			for(Fila aux: filas) {
+				if(eventoAExecutar.fila.getTarget().contains(fila.getName())) {
+					Evento chegada = new Evento(TipoEvento.CHEGADA, time, aux);
 					eventos.add(chegada);
 					Collections.sort(eventos);
 				}
 			}
-		}
-		
+		}		
 	}
 	
 	public static void agendaSaida() {
