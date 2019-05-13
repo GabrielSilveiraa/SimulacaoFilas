@@ -28,7 +28,10 @@ public class FilaExecucao {
 		for(Fila f: config.getFilas())
 		{
 			filas.add(f);
+			System.out.println(f.toString());
+			System.out.println("Proximo: " + f.draftNext());
 		}
+		
 		
 		
 		//teste
@@ -45,14 +48,18 @@ public class FilaExecucao {
 			eventos.add(e);
 		}
 		
-		Evento eventoAExecutar = eventos.get(0);
+		Evento eventoAExecutar = null;
 		
 		//Retirei o maximo para 100 pq
 		for(int i = 0; i<eventos.size(); i++) {
+			
+			if(i > 100)
+				return;
+			
 			//Verificar eventos agendados para executar o que tiver menor tempo
 			eventoAExecutar = eventos.get(i);
 			executaEvento(eventoAExecutar);
-			System.out.println(eventosExecutados.get(i).time + " - " + eventosExecutados.get(i).tipo.toString());
+			System.out.println("Fila: " + eventoAExecutar.fila.getName() + " - " + eventosExecutados.get(i).time + " - " + eventosExecutados.get(i).tipo.toString());
 		}
 	}
 
@@ -80,16 +87,21 @@ public class FilaExecucao {
 		agendaChegada();
 	}
 	
-	//Refatorar para levar em consideracao probabilidade
-	public static void saida(Evento eventoAExecutar) {
+	
+	public static void saida(Evento eventoAExecutar) {		
 		eventos.remove(eventoAExecutar);
 		fila.count--;
 		if(fila.count >= fila.servers) {
 			agendaSaida();
 		}
-		if(!eventoAExecutar.fila.target.isEmpty()) {			
+		
+		//Variavel para controle do proximo sorteado (de acordo com probabilidade)
+		String proximoSorteado = null;
+		
+		if(!eventoAExecutar.fila.target.isEmpty()) {	
+			proximoSorteado = eventoAExecutar.fila.draftNext();
 			for(Fila aux: filas) {
-				if(eventoAExecutar.fila.getTarget().contains(fila.getName())) {
+				if(proximoSorteado.equals(aux.getName())) {
 					Evento chegada = new Evento(TipoEvento.CHEGADA, time, aux);
 					eventos.add(chegada);
 					Collections.sort(eventos);
@@ -99,10 +111,14 @@ public class FilaExecucao {
 	}
 	
 	public static void agendaSaida() {
+		
+		
 		double timeEvento = (fila.maxService - fila.minService) * getTime() + fila.minService + time;
 		Evento saida = new Evento(TipoEvento.SAIDA, timeEvento, fila);
 		eventos.add(saida);
 		Collections.sort(eventos);
+		
+		
 	}
 	
 	public static void agendaChegada() {
@@ -117,4 +133,6 @@ public class FilaExecucao {
 		//Tem que chamar o random que fizemos
 		return new Random().nextDouble();
 	}
+
+	
 }

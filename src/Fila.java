@@ -89,6 +89,25 @@ public class Fila {
 		this.count = count;
 	}
 	
+	//Método para sortear o proximo, ele fica em um array ate o math random vir menor que a probabilidade
+	public String draftNext()
+	{
+		if(target.size() == 0)
+			return null;
+		
+		
+		if(target.size() == 1)
+			return target.get(0);		
+		
+		for(int i = 0; i < target.size(); i++) {
+			if(Math.random() <= probability.get(i))
+				return target.get(i);
+		}	
+		
+		return this.draftNext();
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Fila [id=" + id + ", name=" + name + ", maxCapacity=" + maxCapacity + ", count=" + count + ", servers="
