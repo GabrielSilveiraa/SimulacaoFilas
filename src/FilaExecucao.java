@@ -1,6 +1,11 @@
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
+
+import org.yaml.snakeyaml.Yaml;
 
 public class FilaExecucao {
 
@@ -12,14 +17,35 @@ public class FilaExecucao {
 	
 	static ArrayList<Evento> eventos = new ArrayList<>();
 	
-	public static void main(String[] args) {
-		Fila filaInicial = new Fila();
+	public static void main(String[] args) throws FileNotFoundException {
+		
+		Config config = new Config();
+		
 		filas = new ArrayList<>();
+
+		
+		for(Fila f: config.getFilas())
+		{
+			filas.add(f);
+		}
+		
+		
+		//teste
+		/*
+		Fila filaInicial = new Fila();	
 		filas.add(filaInicial);
 		Evento eventoInicial = new Evento(TipoEvento.CHEGADA, 2.5, filaInicial);
 		eventos.add(eventoInicial);
-		Evento eventoAExecutar = eventoInicial;
-		for(int i = 0; i<maxEventos; i++) {
+		*/
+		
+		for(Evento e: config.getEventos())
+		{
+			eventos.add(e);
+		}
+		
+		Evento eventoAExecutar = eventos.get(0);
+		
+		for(int i = 0; i<eventos.size(); i++) {
 			//Verificar eventos agendados para executar o que tiver menor tempo
 			eventoAExecutar = eventos.get(i);
 			executaEvento(eventoAExecutar);

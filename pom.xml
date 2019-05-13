@@ -1,11 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+   <dependencies>
+   <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-annotations</artifactId>
+    <version>2.9.8</version>
+</dependency>   
+<dependency>
+    <groupId>org.yaml</groupId>
+    <artifactId>snakeyaml</artifactId>
+    <version>1.21</version>            
+</dependency>
+<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
+	<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.5</version>
+</dependency>		
+   </dependencies>
   <groupId>SimulacaoFila</groupId>
   <artifactId>SimulacaoFila</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
+    <sourceDirectory>src</sourceDirectory>    
+    <plugins>    
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
@@ -15,5 +37,5 @@
         </configuration>
       </plugin>
     </plugins>
-  </build>
+  </build>  
 </project>

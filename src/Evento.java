@@ -1,4 +1,5 @@
 public class Evento implements Comparable<Evento>{
+	
 	TipoEvento tipo;
 	Fila fila;
 	double time;
