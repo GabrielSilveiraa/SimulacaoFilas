@@ -1,0 +1,29 @@
+rndnumbersPerSeed: 1000000
+seeds: 4731
+
+queues:
+
+  - {name: "F1", servers: 2, capacity: 4, minArrival: 2.0, maxArrival: 3.0, minService: 4.0, maxService: 7.0}
+  
+  - {name: "F2", servers: 1, minService: 4.0, maxService: 8.0}
+  
+  - {name: "F3", servers: 1, minService: 1.0, maxService: 8.0}
+  
+  - {name: "F4", servers: 1, minService: 1.0, maxService: 8.0}
+  
+arrivals: 
+  
+  - {name: "F1", time: 3.0}
+  
+network: 
+- source: F1
+  target: F2
+  probability: 0.7
+
+- source: F1
+  target: F3
+  probability: 0.3
+  
+- source: F2
+  target: F4
+  probability: 1.0
