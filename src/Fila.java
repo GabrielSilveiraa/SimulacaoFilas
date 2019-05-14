@@ -10,8 +10,7 @@ public class Fila {
 	int maxArrival;
 	int minService;
 	int maxService;
-	//Se goes to for -1, ela vai embora
-	int goesTo;
+
 	ArrayList<String> target = new ArrayList<String>();
 	ArrayList<Double> probability = new ArrayList<Double>();
 	
@@ -63,12 +62,6 @@ public class Fila {
 	public void setMaxService(int maxService) {
 		this.maxService = maxService;
 	}
-	public int getGoesTo() {
-		return goesTo;
-	}
-	public void setGoesTo(int goesTo) {
-		this.goesTo = goesTo;
-	}
 	public ArrayList<String> getTarget() {
 		return target;
 	}
@@ -89,7 +82,7 @@ public class Fila {
 		this.count = count;
 	}
 	
-	//Método para sortear o proximo, ele fica em um array ate o math random vir menor que a probabilidade
+	//Mï¿½todo para sortear o proximo, ele fica em um array ate o math random vir menor que a probabilidade
 	public String draftNext()
 	{
 		if(target.size() == 0)
@@ -112,7 +105,7 @@ public class Fila {
 	public String toString() {
 		return "Fila [id=" + id + ", name=" + name + ", maxCapacity=" + maxCapacity + ", count=" + count + ", servers="
 				+ servers + ", minArrival=" + minArrival + ", maxArrival=" + maxArrival + ", minService=" + minService
-				+ ", maxService=" + maxService + ", goesTo=" + goesTo + ", target=" + target + ", probability="
+				+ ", maxService=" + maxService + ", target=" + target + ", probability="
 				+ probability + "]";
 	}
 	

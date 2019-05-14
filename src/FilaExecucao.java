@@ -9,7 +9,8 @@ import org.yaml.snakeyaml.Yaml;
 
 public class FilaExecucao {
 
-	static Fila fila;
+	static Fila filaAtual;
+	static Fila filaInicial;
 	static ArrayList<Evento> eventosExecutados = new ArrayList<>();
 	static double time = 0;
 	static int maxEventos = 100;
@@ -31,7 +32,7 @@ public class FilaExecucao {
 			System.out.println(f.toString());
 			System.out.println("Proximo: " + f.draftNext());
 		}
-		
+		filaInicial = filas.get(0);
 		
 		
 		//teste
@@ -47,28 +48,29 @@ public class FilaExecucao {
 		{
 			eventos.add(e);
 		}
-		
+		Collections.sort(eventos);
 		Evento eventoAExecutar = null;
 		
 		//Retirei o maximo para 100 pq
-		for(int i = 0; i<eventos.size(); i++) {
+		for(int i = 0; i<100; i++) {
 			
-			if(i > 100)
-				return;
+//			if(i > 100)
+//				return;
 			
 			//Verificar eventos agendados para executar o que tiver menor tempo
-			eventoAExecutar = eventos.get(i);
+			eventoAExecutar = eventos.get(0);
 			executaEvento(eventoAExecutar);
+			eventos.remove(0);
 			System.out.println("Fila: " + eventoAExecutar.fila.getName() + " - " + eventosExecutados.get(i).time + " - " + eventosExecutados.get(i).tipo.toString());
 		}
 	}
 
 	public static void executaEvento(Evento eventoAExecutar) {
-		fila = eventoAExecutar.fila;
+		filaAtual = eventoAExecutar.fila;
 		time = eventoAExecutar.time;
 		switch(eventoAExecutar.tipo) {
 		case CHEGADA:
-			chegada();
+			chegada(eventoAExecutar);
 			break;
 		case SAIDA:
 			saida(eventoAExecutar);
@@ -77,10 +79,10 @@ public class FilaExecucao {
 		eventosExecutados.add(eventoAExecutar);
 	}
 	
-	public static void chegada() {
-		if(fila.count < fila.maxCapacity) {
-			fila.count++;
-			if(fila.count <= fila.servers) {
+	public static void chegada(Evento eventoAExecutar) {
+		if(filaAtual.count < filaAtual.maxCapacity) {
+			filaAtual.count++;
+			if(filaAtual.count <= filaAtual.servers) {
 				agendaSaida();
 			}
 		}
@@ -88,10 +90,9 @@ public class FilaExecucao {
 	}
 	
 	
-	public static void saida(Evento eventoAExecutar) {		
-		eventos.remove(eventoAExecutar);
-		fila.count--;
-		if(fila.count >= fila.servers) {
+	public static void saida(Evento eventoAExecutar) {
+		filaAtual.count--;
+		if(filaAtual.count >= filaAtual.servers) {
 			agendaSaida();
 		}
 		
@@ -107,23 +108,19 @@ public class FilaExecucao {
 					Collections.sort(eventos);
 				}
 			}
-		}		
+		}
 	}
 	
 	public static void agendaSaida() {
-		
-		
-		double timeEvento = (fila.maxService - fila.minService) * getTime() + fila.minService + time;
-		Evento saida = new Evento(TipoEvento.SAIDA, timeEvento, fila);
+		double timeEvento = (filaAtual.maxService - filaAtual.minService) * getTime() + filaAtual.minService + time;
+		Evento saida = new Evento(TipoEvento.SAIDA, timeEvento, filaAtual);
 		eventos.add(saida);
 		Collections.sort(eventos);
-		
-		
 	}
 	
 	public static void agendaChegada() {
-		double timeEvento = (fila.maxArrival - fila.minArrival) * getTime() + fila.minArrival + time;
-		Evento chegada = new Evento(TipoEvento.CHEGADA, timeEvento, fila);
+		double timeEvento = (filaInicial.maxArrival - filaInicial.minArrival) * getTime() + filaInicial.minArrival + time;
+		Evento chegada = new Evento(TipoEvento.CHEGADA, timeEvento, filaInicial);
 		eventos.add(chegada);
 		Collections.sort(eventos);
 	}

@@ -20,4 +20,9 @@ public class Evento implements Comparable<Evento>{
 		}
 		return 0;
 	}
+	
+	@Override
+	public String toString() {
+		return "fila: " + fila.name + ", tempo: "+time + ", tipo: "+tipo;
+	}
 }
