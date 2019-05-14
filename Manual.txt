@@ -1,0 +1,12 @@
+Manual:
+
+Projeto Maven, ter o maven instalado no Eclipse (ou qualquer outra IDE Java) e esperar ele baixar as dependencias sozinho.
+
+E o arquivo de configuração (config.yaml) é bem parecido com o disponibilizado pelo professor no moodle. Um arquivo YAML, com as mesmas propiedades, só com algumas diferenças na estrutura para facilitar o desenvolvimiento.
+
+Só rodar como Java Application a classe FilaExecução e a simulação ira ocorrer, caso queira alterar a quantidade de execuções maximas alterar a variavel maxEventos na classe FilaExecucao.
+
+Basicamente todo a lógica da simulação esta na classe FilaExecução, lá conta com a orquestração dos eventos, agendamento de chegadas e saidas e tudo mais, os métodos estão bem comentados explicando a lógica.
+
+Obrigado,
+Bruno Cardoso e Gabriel Silveira.

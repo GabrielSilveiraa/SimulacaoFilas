@@ -1,19 +1,17 @@
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Random;
 
-import org.yaml.snakeyaml.Yaml;
+
 
 public class FilaExecucao {
 
+	static int maxEventos = 40;	 //Controla a quantidade maxima de eventos
+	
 	static Fila filaAtual;
 	static Fila filaInicial;
 	static ArrayList<Evento> eventosExecutados = new ArrayList<>();
 	static double time = 0;
-	static int maxEventos = 40;
 	static ArrayList<Fila> filas;
 	static MetodoCongruenteLinear congruenteLinear = new MetodoCongruenteLinear(0.5, 1.0, 15.3, 6.8);
 	static ArrayList<Evento> eventos = new ArrayList<>();
@@ -68,6 +66,7 @@ public class FilaExecucao {
 		
 	}
 
+	//Metodo que orquestra as chegadas e saidas
 	public static void executaEvento(Evento eventoAExecutar) {
 		filaAtual = eventoAExecutar.fila;
 		time = eventoAExecutar.time;		
@@ -82,6 +81,7 @@ public class FilaExecucao {
 		eventosExecutados.add(eventoAExecutar);
 	}
 	
+	//Metodo que realiza a chegada
 	public static void chegada(Evento eventoAExecutar) {		
 		if(filaAtual.count < filaAtual.maxCapacity) {
 			filaAtual.incrementaTempoFilaChegada(eventoAExecutar.time);
@@ -93,7 +93,7 @@ public class FilaExecucao {
 		}
 	}
 	
-	
+	//Metodo que realizada a saida e ja encaminha para a ida da proxima fila caso tenha
 	public static void saida(Evento eventoAExecutar) {
 		if(filaAtual.count != 0)
 			filaAtual.incrementaTempoFilaSaida(eventoAExecutar.time);
@@ -116,6 +116,7 @@ public class FilaExecucao {
 		}
 	}
 	
+	//Agenda um evento de saida para a fila atual
 	public static void agendaSaida() {
 		double timeEvento = (filaAtual.maxService - filaAtual.minService) * getTime() + filaAtual.minService + time;
 		Evento saida = new Evento(TipoEvento.SAIDA, timeEvento, filaAtual);
@@ -123,6 +124,7 @@ public class FilaExecucao {
 		Collections.sort(eventos);
 	}
 	
+	//Agenda uma chegada para a fila atual
 	public static void agendaChegada() {
 		double timeEvento = (filaInicial.maxArrival - filaInicial.minArrival) * getTime() + filaInicial.minArrival + time;
 		Evento chegada = new Evento(TipoEvento.CHEGADA, timeEvento, filaInicial);
@@ -130,6 +132,7 @@ public class FilaExecucao {
 		Collections.sort(eventos);
 	}
 	
+	//Metodo que randomiza o tempo
 	public static double getTime() {
 
 		return congruenteLinear.next();
