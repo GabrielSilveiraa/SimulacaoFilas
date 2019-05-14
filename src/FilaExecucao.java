@@ -13,7 +13,7 @@ public class FilaExecucao {
 	static Fila filaInicial;
 	static ArrayList<Evento> eventosExecutados = new ArrayList<>();
 	static double time = 0;
-	static int maxEventos = 100;
+	static int maxEventos = 40;
 	static ArrayList<Fila> filas;
 	static MetodoCongruenteLinear congruenteLinear = new MetodoCongruenteLinear(0.5, 1.0, 15.3, 6.8);
 	static ArrayList<Evento> eventos = new ArrayList<>();
@@ -47,7 +47,7 @@ public class FilaExecucao {
 		lastTime = eventos.get(0).time;
 		
 		//Retirei o maximo para 100 pq
-		for(int i = 0; i<1000; i++) {			
+		for(int i = 0; i<maxEventos; i++) {			
 			
 			//Verificar eventos agendados para executar o que tiver menor tempo
 			eventoAExecutar = eventos.get(0);
@@ -95,7 +95,8 @@ public class FilaExecucao {
 	
 	
 	public static void saida(Evento eventoAExecutar) {
-		filaAtual.incrementaTempoFilaSaida(eventoAExecutar.time);
+		if(filaAtual.count != 0)
+			filaAtual.incrementaTempoFilaSaida(eventoAExecutar.time);
 		if(filaAtual.count >= filaAtual.servers) {
 			agendaSaida();
 		}
@@ -130,7 +131,7 @@ public class FilaExecucao {
 	}
 	
 	public static double getTime() {
-		
+
 		return congruenteLinear.next();
 	}
 

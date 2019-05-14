@@ -128,7 +128,6 @@ public class Fila {
 		
 		diferenca = newValue;
 
-		System.out.println(getName());
 		times.set(count, times.get(count) + newValue);	
 		
 		count = count + 1;		
@@ -145,7 +144,6 @@ public class Fila {
 		ArrayList<Double> timesWithoutCount = new ArrayList<Double>();
 		
 		timesWithoutCount.addAll(times);
-		//timesWithoutCount.remove(count);
 		
 		for(Double times2: timesWithoutCount)
 			aux = aux + times2;
@@ -155,10 +153,7 @@ public class Fila {
 		
 		diferenca = newValue;
 		
-		//if(newValue < 0)
-		//	newValue *= -1;	
-		
-
+	
 
 		times.set(count, times.get(count) + newValue);
 		
