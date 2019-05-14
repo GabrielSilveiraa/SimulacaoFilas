@@ -15,16 +15,17 @@ public class FilaExecucao {
 	static double time = 0;
 	static int maxEventos = 100;
 	static ArrayList<Fila> filas;
-	
+	static MetodoCongruenteLinear congruenteLinear = new MetodoCongruenteLinear(0.5, 1.0, 15.3, 6.8);
 	static ArrayList<Evento> eventos = new ArrayList<>();
+    MetodoCongruenteLinear mcl = null;
+    static double lastTime = 0.0;
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		Config config = new Config();
 		
 		filas = new ArrayList<>();
-
-		
+				
 		//Lendo as filas do config fila
 		for(Fila f: config.getFilas())
 		{
@@ -33,15 +34,7 @@ public class FilaExecucao {
 			System.out.println("Proximo: " + f.draftNext());
 		}
 		filaInicial = filas.get(0);
-		
-		
-		//teste
-		/*
-		Fila filaInicial = new Fila();	
-		filas.add(filaInicial);
-		Evento eventoInicial = new Evento(TipoEvento.CHEGADA, 2.5, filaInicial);
-		eventos.add(eventoInicial);
-		*/
+
 		
 		//Lendo os eventos que ja foram pre estabelecidos no config file
 		for(Evento e: config.getEventos())
@@ -51,23 +44,33 @@ public class FilaExecucao {
 		Collections.sort(eventos);
 		Evento eventoAExecutar = null;
 		
+		lastTime = eventos.get(0).time;
+		
 		//Retirei o maximo para 100 pq
-		for(int i = 0; i<100; i++) {
-			
-//			if(i > 100)
-//				return;
+		for(int i = 0; i<1000; i++) {			
 			
 			//Verificar eventos agendados para executar o que tiver menor tempo
 			eventoAExecutar = eventos.get(0);
+			filaAtual = eventoAExecutar.fila;
+
 			executaEvento(eventoAExecutar);
 			eventos.remove(0);
-			System.out.println("Fila: " + eventoAExecutar.fila.getName() + " - " + eventosExecutados.get(i).time + " - " + eventosExecutados.get(i).tipo.toString());
+			
+			if(eventosExecutados.get(i).fila.getName().equals("F4"))
+			lastTime = eventosExecutados.get(i).time;
+			System.out.println("Fila: " + eventosExecutados.get(i).fila.getName() + " - " + eventosExecutados.get(i).time + " - " + eventosExecutados.get(i).tipo.toString() + "- Pessoas na fila: " + eventosExecutados.get(i).fila.count + " - Diferenca: " + eventosExecutados.get(i).fila.diferenca);
 		}
+		System.out.println("Tempos");
+		for(Fila f: config.getFilas())
+		{
+			System.out.println("Fila: " + f.getName() + " - " + f.times.toString());
+		}
+		
 	}
 
 	public static void executaEvento(Evento eventoAExecutar) {
 		filaAtual = eventoAExecutar.fila;
-		time = eventoAExecutar.time;
+		time = eventoAExecutar.time;		
 		switch(eventoAExecutar.tipo) {
 		case CHEGADA:
 			chegada(eventoAExecutar);
@@ -79,19 +82,20 @@ public class FilaExecucao {
 		eventosExecutados.add(eventoAExecutar);
 	}
 	
-	public static void chegada(Evento eventoAExecutar) {
+	public static void chegada(Evento eventoAExecutar) {		
 		if(filaAtual.count < filaAtual.maxCapacity) {
-			filaAtual.count++;
-			if(filaAtual.count <= filaAtual.servers) {
-				agendaSaida();
-			}
+			filaAtual.incrementaTempoFilaChegada(eventoAExecutar.time);
+			if(filaAtual.count <= filaAtual.servers)
+				agendaSaida();	
+			agendaChegada();
+		} else {
+			saida(eventoAExecutar);
 		}
-		agendaChegada();
 	}
 	
 	
 	public static void saida(Evento eventoAExecutar) {
-		filaAtual.count--;
+		filaAtual.incrementaTempoFilaSaida(eventoAExecutar.time);
 		if(filaAtual.count >= filaAtual.servers) {
 			agendaSaida();
 		}
@@ -126,9 +130,8 @@ public class FilaExecucao {
 	}
 	
 	public static double getTime() {
-		//TODO
-		//Tem que chamar o random que fizemos
-		return new Random().nextDouble();
+		
+		return congruenteLinear.next();
 	}
 
 	
