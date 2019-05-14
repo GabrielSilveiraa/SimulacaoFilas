@@ -15,7 +15,7 @@ public class FilaExecucao {
 	static double time = 0;
 	static int maxEventos = 100;
 	static ArrayList<Fila> filas;
-	
+	static MetodoCongruenteLinear congruenteLinear = new MetodoCongruenteLinear(0.5, 1.0, 15.3, 6.8);
 	static ArrayList<Evento> eventos = new ArrayList<>();
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -126,9 +126,7 @@ public class FilaExecucao {
 	}
 	
 	public static double getTime() {
-		//TODO
-		//Tem que chamar o random que fizemos
-		return new Random().nextDouble();
+		return congruenteLinear.next();
 	}
 
 	
